@@ -135,16 +135,6 @@ const Footer = () => {
 						</div>
 					</div>
 				</div>
-				<div className="bg-primary/10 py-8">
-					<div className="container">
-						<p className="text-center text-base text-body-color dark:text-white">
-							Template by UIdeck and{" "}
-							<a href="https://nextjstemplates.com" rel="nofollow noopener">
-								Next.js Templates
-							</a>
-						</p>
-					</div>
-				</div>
 				<div className="absolute right-0 top-14 z-[-1]">
 					<svg width="55" height="99" viewBox="0 0 55 99" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<circle opacity="0.8" cx="49.5" cy="49.5" r="49.5" fill="#959CB1" />
