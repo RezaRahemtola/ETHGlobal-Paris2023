@@ -5,7 +5,6 @@
       "dom.iterable",
       "esnext"
     ],
-    "baseUrl": "./startup-nextjs-main",
     "paths": {
       "@/*": [
         "./*"
