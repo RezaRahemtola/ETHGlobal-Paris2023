@@ -1,9 +1,11 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import MetaMaskConnection from "@/components/Header/MetaMaskConnection";
 
 const Header = () => {
 	// Navbar toggle
@@ -143,12 +145,7 @@ const Header = () => {
 								</nav>
 							</div>
 							<div className="flex items-center justify-end pr-16 lg:pr-0">
-								<Link
-									href="/signin"
-									className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
-								>
-									Sign In
-								</Link>
+								<MetaMaskConnection />
 								<div>
 									<ThemeToggler />
 								</div>
