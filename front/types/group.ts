@@ -4,6 +4,7 @@ export enum GroupAccess {
 };
 
 export interface Group {
+  id: string,
   title: string,
   access: GroupAccess,
   semaphore: boolean
