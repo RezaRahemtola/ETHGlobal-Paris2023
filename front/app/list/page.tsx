@@ -2,83 +2,39 @@
 import GroupCard from "@/components/Messaging/GroupCard";
 import { GroupAccess } from "@/types/group";
 import { SearchIcon } from "@heroicons/react/outline";
+import { Contract, ethers } from "ethers";
 import { useState } from "react";
+import { abi } from "../abi.json";
 
 const MessageApp = () => {
-	const groups = [
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Joinable non anonymous group",
-			access: GroupAccess.JOINABLE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Private non anonymous group",
-			access: GroupAccess.PRIVATE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "My joinable super semaphore group",
-			access: GroupAccess.JOINABLE,
-			semaphore: true,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Joinable non anonymous group",
-			access: GroupAccess.JOINABLE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Private non anonymous group",
-			access: GroupAccess.PRIVATE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "My joinable super semaphore group",
-			access: GroupAccess.JOINABLE,
-			semaphore: true,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Joinable non anonymous group",
-			access: GroupAccess.JOINABLE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Private non anonymous group",
-			access: GroupAccess.PRIVATE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "My joinable super semaphore group",
-			access: GroupAccess.JOINABLE,
-			semaphore: true,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Joinable non anonymous group",
-			access: GroupAccess.JOINABLE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "Private non anonymous group",
-			access: GroupAccess.PRIVATE,
-			semaphore: false,
-		},
-		{
-			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-			title: "My joinable super semaphore group",
-			access: GroupAccess.JOINABLE,
-			semaphore: true,
-		},
-	];
+	const [groups, setGroups] = useState([]);
+
+	const getGroups = async () => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const ethereum = window.ethereum;
+		const accounts = await ethereum.request({
+			method: "eth_requestAccounts",
+		});
+
+		const provider = new ethers.BrowserProvider(ethereum);
+		const contractAddress = "0x297C24a583D6aB2053d8dF1B886d053ca79a05A3";
+		const registry = new Contract(contractAddress, abi, await provider.getSigner(accounts[0]));
+		const rawRes = await registry.getChannels();
+		const res = [];
+		rawRes.map((group) => {
+			console.log(group);
+			res.push({
+				id: group[0],
+				title: ethers.decodeBytes32String(group[1]),
+				access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
+				semaphore: group[2] >> 2 == 1 ? true : false,
+			});
+		});
+		setGroups(res);
+	};
+
+	getGroups();
+
 	const [searchValue, setSearchValue] = useState("");
 	const filteredValues = groups.filter((group) => {
 		return group.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase());
