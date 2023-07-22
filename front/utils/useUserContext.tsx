@@ -1,5 +1,7 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, createContext, PropsWithChildren, useContext, useCallback } from "react";
+import { useState, useEffect, createContext, PropsWithChildren, useContext, useCallback, useMemo } from "react";
 import secureLocalStorage from "react-secure-storage";
 
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -18,10 +20,12 @@ interface MetaMaskContextData {
 	isConnecting: boolean;
 	connectMetaMask: () => void;
 	clearError: () => void;
+	isLoggedIn: boolean;
 }
 
 interface SemaphoreContextData {
 	identity: Identity | null;
+	isLoggedIn: boolean;
 }
 
 interface UserContextData {
@@ -41,7 +45,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const clearError = () => setErrorMessage("");
 
-	const identity: Identity | null = secureLocalStorage.getItem("semaphore-identity") as Identity | null;
+	const serializedIdentity: string | null = secureLocalStorage.getItem("semaphore-identity") as string | null;
 
 	const [wallet, setWallet] = useState(disconnectedState);
 	// useCallback ensures that we don't uselessly re-create the _updateWallet function on every render
@@ -105,6 +109,15 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 		setIsConnecting(false);
 	};
 
+	const isLoggedToMetamask = useMemo<boolean>(() => wallet.accounts.length > 0, [wallet]);
+
+	const identity = useMemo<Identity | null>(() => {
+		if (serializedIdentity === null) {
+			return null;
+		}
+		return new Identity(serializedIdentity);
+	}, [serializedIdentity]);
+
 	return (
 		<UserContext.Provider
 			value={{
@@ -116,9 +129,11 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 					isConnecting,
 					connectMetaMask,
 					clearError,
+					isLoggedIn: isLoggedToMetamask,
 				},
 				semaphore: {
 					identity,
+					isLoggedIn: identity !== null,
 				},
 			}}
 		>
