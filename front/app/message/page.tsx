@@ -5,7 +5,7 @@ import { MessageType } from "@/types/message";
 
 const MessageApp = () => {
 	// eslint-disable-next-line prefer-const
-	let messages = [
+	const messages = [
 		{
 			type: MessageType.TEXT,
 			value: "Hey, How are you?",
