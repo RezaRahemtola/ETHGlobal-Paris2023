@@ -25,6 +25,7 @@ interface MetaMaskContextData {
 
 interface SemaphoreContextData {
 	identity: Identity | null;
+	setIdentity: (identity: string | null) => void;
 	isLoggedIn: boolean;
 }
 
@@ -45,7 +46,9 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const clearError = () => setErrorMessage("");
 
-	const serializedIdentity: string | null = secureLocalStorage.getItem("semaphore-identity") as string | null;
+	const [serializedIdentity, setSerializedIdentity] = useState<string | null>(
+		secureLocalStorage.getItem("semaphore-identity") as string | null,
+	);
 
 	const [wallet, setWallet] = useState(disconnectedState);
 	// useCallback ensures that we don't uselessly re-create the _updateWallet function on every render
@@ -133,6 +136,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 				},
 				semaphore: {
 					identity,
+					setIdentity: setSerializedIdentity,
 					isLoggedIn: identity !== null,
 				},
 			}}
