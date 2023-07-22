@@ -1,16 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-	useState,
-	useEffect,
-	createContext,
-	PropsWithChildren,
-	useContext,
-	useCallback,
-} from "react";
+import { useState, useEffect, createContext, PropsWithChildren, useContext, useCallback } from "react";
 import secureLocalStorage from "react-secure-storage";
 
 import detectEthereumProvider from "@metamask/detect-provider";
-import {Identity} from "@semaphore-protocol/identity";
+import { Identity } from "@semaphore-protocol/identity";
 
 interface WalletState {
 	accounts: any[];
@@ -35,8 +28,6 @@ interface UserContextData {
 	metamask: MetaMaskContextData;
 	semaphore: SemaphoreContextData;
 }
-
-
 
 const disconnectedState: WalletState = { accounts: [], chainId: "" };
 
@@ -128,7 +119,7 @@ export const UserContextProvider = ({ children }: PropsWithChildren) => {
 				},
 				semaphore: {
 					identity,
-				}
+				},
 			}}
 		>
 			{children}
