@@ -1,0 +1,181 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes1",
+          "name": "_type",
+          "type": "bytes1"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "channelAddress",
+          "type": "address"
+        }
+      ],
+      "name": "ChannelRegistered",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "channelCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "getChannel",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "channelAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "name",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "joiningRules",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes1",
+              "name": "channelType",
+              "type": "bytes1"
+            }
+          ],
+          "internalType": "struct IRegistry.Channel",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getChannels",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "channelAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "name",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "joiningRules",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes1",
+              "name": "channelType",
+              "type": "bytes1"
+            }
+          ],
+          "internalType": "struct IRegistry.Channel[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_channelId",
+          "type": "uint256"
+        }
+      ],
+      "name": "joinChannel",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "channelAddr",
+          "type": "address"
+        }
+      ],
+      "name": "registerChannel",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "registry",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_channelId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes",
+          "name": "contentCID",
+          "type": "bytes"
+        }
+      ],
+      "name": "sendMessage",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}
