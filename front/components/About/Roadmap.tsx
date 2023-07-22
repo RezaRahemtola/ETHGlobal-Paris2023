@@ -7,40 +7,42 @@ const checkIcon = (
 	</svg>
 );
 
-const AboutSectionOne = () => {
-	const List = ({ text }) => (
-		<p className="mb-5 flex items-center text-lg font-medium text-body-color">
-			<span className="mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md bg-primary bg-opacity-10 text-primary">
-				{checkIcon}
-			</span>
-			{text}
-		</p>
-	);
+// a relayer built on top of quicknode to ensure privacy while keeping  fast, secure and reliable
 
+type ListProps = {
+	text: string;
+};
+
+const List = ({ text }: ListProps) => (
+	<p className="mb-5 flex items-center text-lg font-medium text-body-color">
+		<span className="mr-4 flex h-[30px] w-[30px] items-center justify-center rounded-md bg-primary bg-opacity-10 text-primary">
+			{checkIcon}
+		</span>
+		{text}
+	</p>
+);
+
+const Roadmap = () => {
 	return (
 		<section id="about" className="pt-16 md:pt-20 lg:pt-28">
 			<div className="container">
 				<div className="border-b border-body-color/[.15] pb-16 dark:border-white/[.15] md:pb-20 lg:pb-28">
 					<div className="-mx-4 flex flex-wrap items-center">
 						<div className="w-full px-4 lg:w-1/2">
-							<SectionTitle
-								title="Crafted for Startup, SaaS and Business Sites."
-								paragraph="The main ‘thrust’ is to focus on educating attendees on how to best protect highly vulnerable business applications with interactive panel discussions and roundtables."
-								mb="44px"
-							/>
+							<SectionTitle title="An ambitious roadmap" paragraph="" mb="44px" />
 
 							<div className="wow fadeInUp mb-12 max-w-[570px] lg:mb-0" data-wow-delay=".15s">
 								<div className="mx-[-12px] flex flex-wrap">
 									<div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-										<List text="Premium quality" />
-										<List text="Tailwind CSS" />
-										<List text="Use for lifetime" />
+										<List text="Mobile application" />
+										<List text="Message notifications" />
+										<List text="Gnosis integration" />
 									</div>
 
 									<div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-										<List text="Next.js" />
-										<List text="Rich documentation" />
-										<List text="Developer friendly" />
+										<List text="Protocol integration docs" />
+										<List text="Decentralized frontend" />
+										<List text="Multi-chain support" />
 									</div>
 								</div>
 							</div>
@@ -63,4 +65,4 @@ const AboutSectionOne = () => {
 	);
 };
 
-export default AboutSectionOne;
+export default Roadmap;
