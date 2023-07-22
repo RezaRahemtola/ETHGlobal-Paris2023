@@ -1,7 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, createContext, PropsWithChildren, useContext, useCallback } from "react";
+import {
+	useState,
+	useEffect,
+	createContext,
+	PropsWithChildren,
+	useContext,
+	useCallback,
+} from "react";
+import secureLocalStorage from "react-secure-storage";
 
 import detectEthereumProvider from "@metamask/detect-provider";
+import {Identity} from "@semaphore-protocol/identity";
 
 interface WalletState {
 	accounts: any[];
@@ -18,17 +27,30 @@ interface MetaMaskContextData {
 	clearError: () => void;
 }
 
+interface SemaphoreContextData {
+	identity: Identity | null;
+}
+
+interface UserContextData {
+	metamask: MetaMaskContextData;
+	semaphore: SemaphoreContextData;
+}
+
+
+
 const disconnectedState: WalletState = { accounts: [], chainId: "" };
 
-const MetaMaskContext = createContext<MetaMaskContextData>({} as MetaMaskContextData);
+const UserContext = createContext<UserContextData>(null as unknown as UserContextData);
 
-export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
+export const UserContextProvider = ({ children }: PropsWithChildren) => {
 	const [hasProvider, setHasProvider] = useState<boolean | null>(null);
 
 	const [isConnecting, setIsConnecting] = useState(false);
 
 	const [errorMessage, setErrorMessage] = useState("");
 	const clearError = () => setErrorMessage("");
+
+	const identity: Identity | null = secureLocalStorage.getItem("semaphore-identity") as Identity | null;
 
 	const [wallet, setWallet] = useState(disconnectedState);
 	// useCallback ensures that we don't uselessly re-create the _updateWallet function on every render
@@ -93,26 +115,31 @@ export const MetaMaskContextProvider = ({ children }: PropsWithChildren) => {
 	};
 
 	return (
-		<MetaMaskContext.Provider
+		<UserContext.Provider
 			value={{
-				wallet,
-				hasProvider,
-				error: !!errorMessage,
-				errorMessage,
-				isConnecting,
-				connectMetaMask,
-				clearError,
+				metamask: {
+					wallet,
+					hasProvider,
+					error: !!errorMessage,
+					errorMessage,
+					isConnecting,
+					connectMetaMask,
+					clearError,
+				},
+				semaphore: {
+					identity,
+				}
 			}}
 		>
 			{children}
-		</MetaMaskContext.Provider>
+		</UserContext.Provider>
 	);
 };
 
-export const useMetaMask = () => {
-	const context = useContext(MetaMaskContext);
+export const useUserContext = () => {
+	const context = useContext(UserContext);
 	if (context === undefined) {
-		throw new Error('useMetaMask must be used within a "MetaMaskContextProvider"');
+		throw new Error('useUserContext must be used within a "UserContextProvider"');
 	}
 	return context;
 };

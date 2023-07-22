@@ -1,12 +1,12 @@
-import { useMetaMask } from "@/utils/useMetaMask";
+import { useUserContext } from "@/utils/useUserContext";
 import React from "react";
 import Link from "next/link";
 
 export default function MetaMaskConnection() {
-	const { wallet, hasProvider, isConnecting, connectMetaMask } = useMetaMask();
+	const { metamask } = useUserContext();
 	const buttonStyle = "ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
 
-	if (!hasProvider) {
+	if (!metamask.hasProvider) {
 		return (
 			<Link
 				href="https://metamask.io"
@@ -17,11 +17,11 @@ export default function MetaMaskConnection() {
 		);
 	}
 
-	if (window.ethereum?.isMetaMask && wallet.accounts.length < 1) {
+	if (window.ethereum?.isMetaMask && metamask.wallet.accounts.length < 1) {
 		return (
 			<button
-				disabled={isConnecting}
-				onClick={connectMetaMask}
+				disabled={metamask.isConnecting}
+				onClick={metamask.connectMetaMask}
 				className={buttonStyle}
 			>
 				Connect MetaMask
@@ -34,7 +34,7 @@ export default function MetaMaskConnection() {
 			disabled
 			className={buttonStyle}
 		>
-			{wallet.accounts[0].substring(0, 8)}...
+			{metamask.wallet.accounts[0].substring(0, 8)}...
 		</button>
 	);
 }
