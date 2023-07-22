@@ -1,5 +1,6 @@
 "use client";
 import GroupCard from "@/components/Messaging/GroupCard";
+import { CONTRACT_ADDRESS } from "@/config/environment";
 import { GroupAccess } from "@/types/group";
 import { SearchIcon } from "@heroicons/react/outline";
 import { Contract, ethers } from "ethers";
@@ -17,7 +18,7 @@ const MessageApp = () => {
 		});
 
 		const provider = new ethers.BrowserProvider(ethereum);
-		const contractAddress = "0x297C24a583D6aB2053d8dF1B886d053ca79a05A3";
+		const contractAddress = CONTRACT_ADDRESS;
 		const registry = new Contract(contractAddress, abi, await provider.getSigner(accounts[0]));
 		const rawRes = await registry.getChannels();
 		const res = [];
