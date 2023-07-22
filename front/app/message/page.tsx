@@ -1,17 +1,13 @@
 "use client";
+
 import MessageCard from "@/components/Messaging/MessageCard";
 import MessageInput from "@/components/Messaging/MessageInput";
 import { Group, GroupAccess } from "@/types/group";
 import { MessageType } from "@/types/message";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const MessageApp = () => {
-	const searchParams = useSearchParams();
-
-	const id = searchParams.get("id");
-	console.log(id);
-
 	const group: Group = {
 		id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 		title: "My joinable super semaphore group",
@@ -26,6 +22,15 @@ const MessageApp = () => {
 			address: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 		},
 	]);
+	const searchParams = useSearchParams();
+	const router = useRouter();
+
+	const id = searchParams.get("id");
+
+	if (!id) {
+		router.push("/");
+		return <></>;
+	}
 
 	const sendMessage = (data) => {
 		setMessages([
@@ -56,7 +61,10 @@ const MessageApp = () => {
 					<div className="mx-auto h-[50rem] overflow-y-auto bg-interface-message rounded-lg">
 						{messages.map((messageData) => (
 							<MessageCard
-								message={{ ...messageData, address: group.semaphore ? "Anonymous" : messageData.address }}
+								message={{
+									...messageData,
+									address: group.semaphore ? "Anonymous" : messageData.address,
+								}}
 							></MessageCard>
 						))}
 					</div>

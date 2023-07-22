@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
-import MetaMaskConnection from "@/components/Header/MetaMaskConnection";
+import SignInButton from "@/components/Header/SignInButton";
 
 const Header = () => {
 	// Navbar toggle
@@ -131,7 +131,7 @@ const Header = () => {
 							</nav>
 						</div>
 						<div className="flex items-center justify-end pr-16 lg:pr-0">
-							<MetaMaskConnection />
+							<SignInButton />
 							<div>
 								<ThemeToggler />
 							</div>
