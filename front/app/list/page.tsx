@@ -1,5 +1,8 @@
+"use client";
 import GroupCard from "@/components/Messaging/GroupCard";
 import { GroupAccess } from "@/types/group";
+import { SearchIcon } from "@heroicons/react/outline";
+import { useState } from "react";
 
 const MessageApp = () => {
 	const groups = [
@@ -76,14 +79,35 @@ const MessageApp = () => {
 			semaphore: true,
 		},
 	];
+	const [searchValue, setSearchValue] = useState("");
+	const filteredValues = groups.filter((group) => {
+		return group.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase());
+	});
 	return (
 		<>
 			<section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
 				<div className="container mx-auto">
-					<h1 className="text-center text-xl">Chats</h1>
+					<div className="w-96 m-auto">
+						<label htmlFor="search" className="sr-only block text-sm font-semibold text-heading">
+							Search
+						</label>
+						<div className="relative mt-2 flex">
+							<div className="pointer-events-none absolute inset-y-0 left-0 flex flex-shrink-0 items-center pl-4 focus-within:z-20">
+								<SearchIcon className="h-5 w-5 text-text" />
+							</div>
+							<input
+								id="search"
+								name="search"
+								value={searchValue}
+								onChange={(e) => setSearchValue(e.target.value)}
+								placeholder="Quick Search"
+								className="block w-full rounded-xl border-2 border-layer-3 bg-muted-1 px-4 py-2.5 pl-11 pr-14 font-semibold text-heading placeholder:text-text/50 border-primary focus:outline-none focus:ring-0 sm:text-sm"
+							/>
+						</div>
+					</div>
 					<div className="flex justify-center">
 						<div className="grid grid-flow-row grid-cols-3">
-							{groups.map((group) => (
+							{filteredValues.map((group) => (
 								<GroupCard group={group}></GroupCard>
 							))}
 						</div>
