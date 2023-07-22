@@ -8,6 +8,7 @@
         "compile": "hardhat compile",
         "download:snark-artifacts": "hardhat run scripts/download-snark-artifacts.ts",
         "deploy": "yarn compile && hardhat deploy",
+        "script": "yarn compile && hardhat",
         "test": "hardhat run scripts/download-snark-artifacts.ts && hardhat test",
         "test:report-gas": "REPORT_GAS=true hardhat test",
         "test:coverage": "hardhat coverage",

@@ -3,26 +3,29 @@ import { Identity } from "@semaphore-protocol/identity"
 import { generateProof } from "@semaphore-protocol/proof"
 import { expect } from "chai"
 import { formatBytes32String } from "ethers/lib/utils"
-import { run } from "hardhat"
+import { ethers, run } from "hardhat"
 // @ts-ignore: typechain folder will be generated after contracts compilation
 import { Feedback } from "../build/typechain"
 import { config } from "../package.json"
 
 describe("Feedback", () => {
     let feedbackContract: Feedback
-    let semaphoreContract: string
+    const semaphoreContract = "0x3889927F0B5Eb1a02C6E2C20b39a1Bd4EAd76131" as any
 
     const groupId = "42"
     const group = new Group(groupId)
     const users: Identity[] = []
 
     before(async () => {
-        const { semaphore } = await run("deploy:semaphore", {
-            logs: false
-        })
+        // const { semaphore } = await run("deploy:semaphore", {
+        //     logs: false
+        // })
 
-        feedbackContract = await run("deploy", { logs: false, group: groupId, semaphore: semaphore.address })
-        semaphoreContract = semaphore
+        const FeedbackFactory = await ethers.getContractFactory("Feedback")
+
+        feedbackContract = FeedbackFactory.attach("0x0CA966181aBa3083b6B429e2e5c300C4B226B289")
+        // await run("deploy", { logs: false, group: groupId, semaphore: semaphore.address })
+        // semaphoreContract = semaphore
 
         users.push(new Identity())
         users.push(new Identity())
