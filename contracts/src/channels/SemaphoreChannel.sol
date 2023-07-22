@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.4;
+pragma solidity 0.8.18;
 
-import "../interfaces/IChannel.sol";
-import "../interfaces/ISemaphore.sol";
+import {IChannel} from "../interfaces/IChannel.sol";
+import {ISemaphore} from "../interfaces/ISemaphore.sol";
 
 contract SemaphoreChannel is IChannel {
     address public immutable _semaphore;
@@ -13,13 +13,18 @@ contract SemaphoreChannel is IChannel {
 
     uint256 public messageCount;
 
-    constructor(address semaphore_, uint256 groupId_, bytes32 name_, bytes32 joiningRules_) {
+    constructor(
+        address semaphore_,
+        uint256 groupId_,
+        bytes32 name_,
+        bytes32 joiningRules_
+    ) {
         _semaphore = semaphore_;
         _groupId = groupId_;
         _name = name_;
         _joiningRules = joiningRules_;
-        
-       ISemaphore(semaphore_).createGroup(groupId_, 20, address(this));
+
+        ISemaphore(semaphore_).createGroup(groupId_, 20, address(this));
     }
 
     function name() public view override returns (bytes32) {
@@ -53,7 +58,14 @@ contract SemaphoreChannel is IChannel {
             nullifierHash := calldataload(add(4, 68))
             proof := calldataload(add(4, 100))
         }
-        ISemaphore(_semaphore).verifyProof(_groupId, merkleTreeRoot, message, nullifierHash, _groupId, proof);
+        ISemaphore(_semaphore).verifyProof(
+            _groupId,
+            merkleTreeRoot,
+            message,
+            nullifierHash,
+            _groupId,
+            proof
+        );
 
         messageCount++;
         emit MessageSent(messageCount - 1, bytes32(message));
