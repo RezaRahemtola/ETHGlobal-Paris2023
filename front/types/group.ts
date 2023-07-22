@@ -1,11 +1,11 @@
 export enum GroupAccess {
-  PRIVATE,
-  JOINABLE
-};
+	PRIVATE,
+	JOINABLE,
+}
 
 export interface Group {
-  id: string,
-  title: string,
-  access: GroupAccess,
-  semaphore: boolean
-};
+	id: string;
+	title: string;
+	access: GroupAccess;
+	semaphore: boolean;
+}
