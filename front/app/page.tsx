@@ -1,4 +1,4 @@
-import Roadmap from "@/components/About/Roadmap";
+import Roadmap from "@/components/Roadmap";
 import ScrollUp from "@/components/Common/ScrollUp";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
