@@ -4,61 +4,73 @@ import { GroupAccess } from "@/types/group";
 const MessageApp = () => {
 	const groups = [
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Joinable non anonymous group",
 			access: GroupAccess.JOINABLE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Private non anonymous group",
 			access: GroupAccess.PRIVATE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "My joinable super semaphore group",
 			access: GroupAccess.JOINABLE,
 			semaphore: true,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Joinable non anonymous group",
 			access: GroupAccess.JOINABLE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Private non anonymous group",
 			access: GroupAccess.PRIVATE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "My joinable super semaphore group",
 			access: GroupAccess.JOINABLE,
 			semaphore: true,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Joinable non anonymous group",
 			access: GroupAccess.JOINABLE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Private non anonymous group",
 			access: GroupAccess.PRIVATE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "My joinable super semaphore group",
 			access: GroupAccess.JOINABLE,
 			semaphore: true,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Joinable non anonymous group",
 			access: GroupAccess.JOINABLE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "Private non anonymous group",
 			access: GroupAccess.PRIVATE,
 			semaphore: false,
 		},
 		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 			title: "My joinable super semaphore group",
 			access: GroupAccess.JOINABLE,
 			semaphore: true,
