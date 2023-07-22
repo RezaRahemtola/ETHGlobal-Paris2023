@@ -1,18 +1,88 @@
 import GroupCard from "@/components/Messaging/GroupCard";
+import { GroupAccess } from "@/types/group";
 
 const MessageApp = () => {
 	const groups = [
 		{
-			title: "Mon super group",
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Joinable non anonymous group",
+			access: GroupAccess.JOINABLE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Private non anonymous group",
+			access: GroupAccess.PRIVATE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "My joinable super semaphore group",
+			access: GroupAccess.JOINABLE,
+			semaphore: true,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Joinable non anonymous group",
+			access: GroupAccess.JOINABLE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Private non anonymous group",
+			access: GroupAccess.PRIVATE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "My joinable super semaphore group",
+			access: GroupAccess.JOINABLE,
+			semaphore: true,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Joinable non anonymous group",
+			access: GroupAccess.JOINABLE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Private non anonymous group",
+			access: GroupAccess.PRIVATE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "My joinable super semaphore group",
+			access: GroupAccess.JOINABLE,
+			semaphore: true,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Joinable non anonymous group",
+			access: GroupAccess.JOINABLE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "Private non anonymous group",
+			access: GroupAccess.PRIVATE,
+			semaphore: false,
+		},
+		{
+			id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+			title: "My joinable super semaphore group",
+			access: GroupAccess.JOINABLE,
+			semaphore: true,
 		},
 	];
 	return (
 		<>
 			<section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
-				<div className="container mx-auto w-[50rem]">
-					<h1 className="mx-auto mb-5">List</h1>
-					<div>
-						<div className="mx-auto h-[50rem] overflow-y-auto bg-interface-message rounded-lg">
+				<div className="container mx-auto">
+					<h1 className="text-center text-xl">Chats</h1>
+					<div className="flex justify-center">
+						<div className="grid grid-flow-row grid-cols-3">
 							{groups.map((group) => (
 								<GroupCard group={group}></GroupCard>
 							))}

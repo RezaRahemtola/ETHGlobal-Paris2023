@@ -1,25 +1,40 @@
 "use client";
 import MessageCard from "@/components/Messaging/MessageCard";
 import MessageInput from "@/components/Messaging/MessageInput";
+import { Group, GroupAccess } from "@/types/group";
 import { MessageType } from "@/types/message";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 const MessageApp = () => {
-	// eslint-disable-next-line prefer-const
-	let messages = [
+	const searchParams = useSearchParams();
+
+	const id = searchParams.get("id");
+	console.log(id);
+
+	const group: Group = {
+		id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
+		title: "My joinable super semaphore group",
+		access: GroupAccess.JOINABLE,
+		semaphore: false,
+	};
+	const [messages, setMessages] = useState([
 		{
 			type: MessageType.TEXT,
 			value: "Hey, How are you?",
 			owned: false,
+			address: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 		},
-	];
+	]);
 
-	const sendMessage = (type: MessageType, value: string) => {
-		messages.push({
-			type,
-			value,
-			owned: false,
-		});
-		console.log(messages);
+	const sendMessage = (data) => {
+		setMessages([
+			...messages,
+			{
+				...data,
+				owned: true,
+			},
+		]);
 	};
 
 	return (
@@ -27,23 +42,25 @@ const MessageApp = () => {
 			<section className="relative z-10 overflow-hidden pt-32 pb-16 md:pb-20 lg:pb-28">
 				<div className="container mx-auto w-[50rem]">
 					<div className="mx-auto mb-5">
-						<div className="flex flex-row align-middle cursor-pointer">
+						<a href="/list" className="flex flex-row align-middle cursor-pointer">
 							<svg className="w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path
-									fill-rule="evenodd"
+									fillRule="evenodd"
 									d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-									clip-rule="evenodd"
+									clipRule="evenodd"
 								></path>
 							</svg>
 							<p className="ml-2">Previous</p>
-						</div>
+						</a>
 					</div>
 					<div className="mx-auto h-[50rem] overflow-y-auto bg-interface-message rounded-lg">
 						{messages.map((messageData) => (
-							<MessageCard message={messageData}></MessageCard>
+							<MessageCard
+								message={{ ...messageData, address: group.semaphore ? "Anonymous" : messageData.address }}
+							></MessageCard>
 						))}
 					</div>
-					<MessageInput sendMessage={(type: MessageType, value: string) => sendMessage(type, value)} />
+					<MessageInput sendMessage={(data) => sendMessage(data)} />
 				</div>
 				<div className="absolute top-0 left-0 z-[-1]">
 					<svg width="1440" height="969" viewBox="0 0 1440 969" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -3,7 +3,8 @@ import { Message } from "@/types/message";
 const MessageCard = ({ message }: { message: Message }) => {
 	const { value } = message;
 	return (
-		<div className="m-5 flex justify-end">
+		<div className="m-5 justify-end flex-col">
+			{!message.owned && <p className="font-extralight mb-1 text-xs ">{message.address}</p>}
 			<div className={`flex w-full ${message.owned ? "flex-row-reverse" : ""}`}>
 				<div
 					className={`relative max-w-xl rounded-xl ${

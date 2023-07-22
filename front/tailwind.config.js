@@ -49,7 +49,10 @@ module.exports = {
 			colors: {
 				"message-card-not-owned": "#252a41",
 				"interface-message": "#050926",
-				"message-card-owned": "#2563eb"
+				"message-card-owned": "#2563eb",
+				"danger": "#a61212",
+				"important": "#141d63",
+				"group-card-hover": "#0f122b"
 			},
 		},
 	},
