@@ -3,6 +3,7 @@ import SharePost from "@/components/Blog/SharePost";
 import TagButton from "@/components/Blog/TagButton";
 import NewsLatterBox from "@/components/Contact/NewsLatterBox";
 import Image from "next/image";
+import { APP_NAME } from "@/config/environment";
 
 const BlogSidebarPage = () => {
 	return (
@@ -314,7 +315,7 @@ const BlogSidebarPage = () => {
 									</li>
 									<li>
 										<a href="#0" className="mb-3 inline-block text-base font-medium text-body-color hover:text-primary">
-											Startup
+											{APP_NAME}
 										</a>
 									</li>
 									<li>
@@ -337,7 +338,7 @@ const BlogSidebarPage = () => {
 									<TagButton text="Themes" />
 									<TagButton text="UI Kit" />
 									<TagButton text="Tailwind" />
-									<TagButton text="Startup" />
+									<TagButton text={APP_NAME} />
 									<TagButton text="Business" />
 								</div>
 							</div>
