@@ -1,45 +1,44 @@
 "use client";
 import GroupCard from "@/components/Messaging/GroupCard";
-import { CONTRACT_ADDRESS } from "@/config/environment";
-import { GroupAccess } from "@/types/group";
+import { Group, GroupAccess } from "@/types/group";
 import { SearchIcon } from "@heroicons/react/outline";
 import { Contract, ethers } from "ethers";
-import { useState } from "react";
-import { abi } from "../abi.json";
+import { useEffect, useState } from "react";
+import abi from "../abi.json";
 
 const MessageApp = () => {
-	const [groups, setGroups] = useState([]);
-
-	const getGroups = async () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const ethereum = window.ethereum;
-		const accounts = await ethereum.request({
-			method: "eth_requestAccounts",
-		});
-
-		const provider = new ethers.BrowserProvider(ethereum);
-		const contractAddress = CONTRACT_ADDRESS;
-		const registry = new Contract(contractAddress, abi, await provider.getSigner(accounts[0]));
-		const rawRes = await registry.getChannels();
-		const res = [];
-		rawRes.map((group) => {
-			console.log(group);
-			res.push({
-				id: group[0],
-				title: ethers.decodeBytes32String(group[1]),
-				access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
-				semaphore: group[2] >> 2 == 1 ? true : false,
-			});
-		});
-		setGroups(res);
-	};
-
-	getGroups();
-
+	const [groups, setGroups] = useState<Group[]>([]);
 	const [searchValue, setSearchValue] = useState("");
-	const filteredValues = groups.filter((group) => {
-		return group.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase());
+	const filteredValues = groups.filter((group) =>
+		group.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()),
+	);
+
+	useEffect(() => {
+		(async () => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			const ethereum = window.ethereum;
+			const accounts = await ethereum.request({
+				method: "eth_requestAccounts",
+			});
+
+			const provider = new ethers.BrowserProvider(ethereum);
+			const contractAddress = "0x297C24a583D6aB2053d8dF1B886d053ca79a05A3";
+			const registry = new Contract(contractAddress, abi.abi, await provider.getSigner(accounts[0]));
+			const rawRes = await registry.getChannels();
+			const res = [];
+			rawRes.map((group) => {
+				console.log(group);
+				res.push({
+					id: group[0],
+					title: ethers.decodeBytes32String(group[1]),
+					access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
+					semaphore: group[2] >> 2 == 1,
+				});
+			});
+			setGroups(res);
+		})();
 	});
+
 	return (
 		<>
 			<section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
