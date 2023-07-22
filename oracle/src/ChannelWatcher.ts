@@ -1,9 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { Contract, ContractEventPayload, id } from "ethers";
-import { DFNS_API_CLIENT } from "./dfns";
 import * as sigUtil from "@metamask/eth-sig-util";
 import * as ethUtil from "ethereumjs-util";
 import { TransactionKind } from "@dfns/sdk/codegen/datamodel/Wallets";
+import DfnsClient from "./DfnsClient";
 
 export const CHANNEL_TYPE_PRIVATE = 0b100;
 export const CHANNEL_TYPE_ANONYMOUS = 0b010;
@@ -15,10 +15,12 @@ const EVENT = id("MemberJoined(address,string)");
 export class ChannelWatcher {
   private contract: Contract;
   private uuid: string;
+  private dfnsClient: DfnsClient;
 
-  constructor(contract: Contract) {
+  constructor(contract: Contract, dfnsClient: DfnsClient) {
     this.contract = contract;
     this.uuid = uuidv4();
+    this.dfnsClient = dfnsClient;
   }
 
   private async addNewMember(event: ContractEventPayload) {
@@ -33,19 +35,14 @@ export class ChannelWatcher {
       version: "x25519-xsalsa20-poly1305",
     });
 
-    const encData = ethUtil.bufferToHex(
-      Buffer.from(JSON.stringify(result), "utf8")
-    );
+    const encData = ethUtil.bufferToHex(Buffer.from(JSON.stringify(result), "utf8"));
 
-    const wallet = await DFNS_API_CLIENT.getWallet();
+    const wallet = await this.dfnsClient.getWallet();
     const to = await this.contract.getAddress();
-    const txData = this.contract.interface.encodeFunctionData(
-      "postCreds(address,string)",
-      [params.member, encData]
-    );
+    const txData = this.contract.interface.encodeFunctionData("postCreds(address,string)", [params.member, encData]);
 
     try {
-      await DFNS_API_CLIENT.client.wallets.broadcastTransaction({
+      await this.dfnsClient.client.wallets.broadcastTransaction({
         body: { kind: TransactionKind.Evm, data: txData, to: to },
         walletId: wallet.id,
       });
@@ -53,9 +50,7 @@ export class ChannelWatcher {
       console.error(e);
     }
 
-    console.log(
-      `Channel ${this.uuid} has a new member: ${params.member}, pubkey: ${params.pubKey}}`
-    );
+    console.log(`Channel ${this.uuid} has a new member: ${params.member}, pubkey: ${params.pubKey}`);
   }
 
   public async listenAndRegisterNewMember() {
