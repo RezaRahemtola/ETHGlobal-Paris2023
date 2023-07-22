@@ -1,10 +1,10 @@
 export enum MessageType {
-  TEXT,
-  IMAGE
-};
+	TEXT,
+	IMAGE,
+}
 
 export interface Message {
-  value: string
-  type: MessageType
-  owned: boolean
-};
+	value: string;
+	type: MessageType;
+	owned: boolean;
+}

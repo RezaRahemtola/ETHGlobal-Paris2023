@@ -1,3 +1,3 @@
 export interface Group {
-  title: string
-};
+	title: string;
+}
