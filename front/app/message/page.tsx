@@ -28,8 +28,8 @@ const MessageApp = () => {
 	const searchParams = useSearchParams();
 	const groupsCtx = useGroupsContext();
 
-	const [groupData, setGroupData] = useState<GroupData>(null as unknown as GroupData);
-	const [messages, setMessages] = useState([
+	const [, setGroupData] = useState<GroupData>(null as unknown as GroupData);
+	const [messages] = useState([
 		{
 			type: MessageType.TEXT,
 			value: "Hey, How are you?",
