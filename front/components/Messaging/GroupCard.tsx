@@ -6,7 +6,7 @@ const GroupCard = ({ group }: { group: Group }) => {
 		<div className="rounded-md bg-white shadow-one dark:bg-dark w-80 m-10">
 			<div className="p-6 sm:p-8 md:py-8 md:px-6 lg:p-8 xl:py-8 xl:px-5 2xl:p-8 relative">
 				{group.access == GroupAccess.PRIVATE && <span className="absolute top-2 right-2">🔒</span>}
-				{group.semaphore && (
+				{group.semaphore == true && (
 					<img className="absolute top-2 right-2" width="20" src="https://semaphore.appliedzkp.org/img/favicon.ico" />
 				)}
 
