@@ -1,16 +1,17 @@
 "use client";
 import GroupCard from "@/components/Messaging/GroupCard";
 import { CONTRACT_ADDRESS } from "@/config/environment";
-import { Group, GroupAccess } from "@/types/group";
+import { GroupAccess } from "@/types/group";
 import { SearchIcon } from "@heroicons/react/outline";
 import { Contract, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import abi from "../abi.json";
+import { useGroupsContext } from "@/utils/useGroupsContext";
 
 const MessageApp = () => {
-	const [groups, setGroups] = useState<Group[]>([]);
+	const groupsCtx = useGroupsContext();
 	const [searchValue, setSearchValue] = useState("");
-	const filteredValues = groups.filter((group) =>
+	const filteredValues = groupsCtx.groups.filter((group) =>
 		group.title.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()),
 	);
 
@@ -33,7 +34,8 @@ const MessageApp = () => {
 					semaphore: parseInt(group[2], 16) & (1 << 1),
 				});
 			});
-			setGroups(res);
+			groupsCtx.setGroups(res);
+			console.log(res);
 		})();
 	}, []);
 
