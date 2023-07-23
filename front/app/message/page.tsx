@@ -28,6 +28,7 @@ const MessageApp = () => {
 	const searchParams = useSearchParams();
 	const groupsCtx = useGroupsContext();
 
+	const [groupData, setGroupData] = useState<GroupData>(null as unknown as GroupData);
 	const [messages, setMessages] = useState([
 		{
 			type: MessageType.TEXT,
@@ -52,7 +53,7 @@ const MessageApp = () => {
 				res.push({
 					id: group[0],
 					title: ethers.decodeBytes32String(group[1]),
-					access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
+					access: group[2] >> 3 == 1 ? GroupAccess.PUBLIC : GroupAccess.PRIVATE,
 					semaphore: group[2] >> 2 == 1,
 				});
 			});
@@ -69,6 +70,10 @@ const MessageApp = () => {
 	}
 
 	useEffect(() => {
+		if (!group) {
+			return;
+		}
+
 		(async () => {
 			const ethereum = window.ethereum;
 			const accounts = await ethereum.request({
@@ -80,16 +85,16 @@ const MessageApp = () => {
 			const type = await registry.getType();
 
 			if (type !== semaphoreGroupType) {
-				return {
+				setGroupData({
 					semaphore: false,
-				};
+				});
 			}
 
 			const groupId = await registry._groupId();
-			return {
+			setGroupData({
 				semaphore: true,
 				groupId,
-			};
+			});
 		})();
 	}, [group]);
 
