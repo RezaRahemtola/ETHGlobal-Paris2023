@@ -20,7 +20,7 @@ const GroupCard = ({ group }: { group: Group }) => {
 							<span>Join</span>
 						</Link>
 					)}
-					{group.access == GroupAccess.JOINABLE && (
+					{group.access == GroupAccess.PUBLIC && (
 						<Link
 							href={`/message?id=${group.id}`}
 							className="bg-primary hover:bg-sky-700 p-2 pl-6 rounded flex m-auto w-20"

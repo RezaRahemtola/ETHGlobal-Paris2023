@@ -13,5 +13,11 @@ const menuData: Menu[] = [
 		path: "/rooms",
 		newTab: false,
 	},
+	{
+		id: 3,
+		title: "Create a room",
+		path: "/creation",
+		newTab: false,
+	},
 ];
 export default menuData;

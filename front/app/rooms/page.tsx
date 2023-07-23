@@ -1,11 +1,11 @@
 "use client";
 import GroupCard from "@/components/Messaging/GroupCard";
+import { CONTRACT_ADDRESS } from "@/config/environment";
 import { Group, GroupAccess } from "@/types/group";
 import { SearchIcon } from "@heroicons/react/outline";
 import { Contract, ethers } from "ethers";
 import { useEffect, useState } from "react";
 import abi from "../abi.json";
-import { CONTRACT_ADDRESS } from "@/config/environment";
 
 const MessageApp = () => {
 	const [groups, setGroups] = useState<Group[]>([]);
@@ -29,8 +29,8 @@ const MessageApp = () => {
 				res.push({
 					id: group[0],
 					title: ethers.decodeBytes32String(group[1]),
-					access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
-					semaphore: group[2] >> 2 == 1,
+					access: parseInt(group[2], 16) & (1 << 0) ? GroupAccess.PRIVATE : GroupAccess.PUBLIC,
+					semaphore: parseInt(group[2], 16) & (1 << 1),
 				});
 			});
 			setGroups(res);

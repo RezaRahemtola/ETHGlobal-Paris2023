@@ -11,7 +11,7 @@ const MessageApp = () => {
 	const group: Group = {
 		id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 		title: "My joinable super semaphore group",
-		access: GroupAccess.JOINABLE,
+		access: GroupAccess.PUBLIC,
 		semaphore: false,
 	};
 	const [messages, setMessages] = useState([

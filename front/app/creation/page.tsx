@@ -11,22 +11,19 @@ const MessageApp = () => {
 	const [isPrivate, setIsPrivate] = useState(true);
 
 	const handleCreateChannel = async () => {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const ethereum = window.ethereum;
 		const accounts = await ethereum.request({
 			method: "eth_requestAccounts",
 		});
-		console.log(accounts);
+		const channelType = (Number(isPrivate) << 0) | (Number(isSemaphore) << 1);
+
 		const provider = new ethers.BrowserProvider(ethereum);
 		const signer = await provider.getSigner(accounts[0]);
 		const registry = new Contract(CONTRACT_ADDRESS, abi.abi, signer);
-		console.log({
-			name_: ethers.encodeBytes32String(name),
-			channelType_: 0x01,
-		});
-		const tx = await registry.createChannel(ethers.encodeBytes32String(name),  "0x01");
+		const tx = await registry.createChannel(ethers.encodeBytes32String(name), "0x0" + channelType.toString(16));
 		await tx.wait();
-		window.location.href = "/list";
+
+		window.location.href = "/rooms";
 	};
 
 	return (
