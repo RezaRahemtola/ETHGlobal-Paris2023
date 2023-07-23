@@ -9,7 +9,6 @@ contract SemaphoreChannel is IChannel {
     uint256 public immutable _groupId;
 
     bytes32 public immutable _name;
-    bytes32 public immutable _joiningRules;
 
     uint256 public messageCount;
 
@@ -22,7 +21,6 @@ contract SemaphoreChannel is IChannel {
         _semaphore = semaphore_;
         _groupId = groupId_;
         _name = name_;
-        _joiningRules = joiningRules_;
 
         ISemaphore(semaphore_).createGroup(groupId_, 20, address(this));
     }
@@ -35,28 +33,30 @@ contract SemaphoreChannel is IChannel {
         return bytes1(0x01);
     }
 
-    function getJoiningRules() external view override returns (bytes32) {
-        return _joiningRules;
-    }
-
-    function join(bytes calldata) external override {
+    function join(string memory pubkey, bytes memory data) external {
         uint256 identityCommitment;
         assembly {
-            identityCommitment := calldataload(4)
+            identityCommitment := mload(add(data, 32))
         }
-        ISemaphore(_semaphore).addMember(_groupId, 0);
+        ISemaphore(_semaphore).addMember(_groupId, identityCommitment);
+
+        emit MemberJoined(msg.sender, pubkey);
     }
 
-    function sendMessage(bytes calldata) external override {
+    function postCreds(address member, string memory cipherkey) external {
+        emit MemeberCredentials(member, cipherkey);
+    }
+
+    function sendMessage(bytes memory data) external override {
         uint256 message;
         uint256 merkleTreeRoot;
         uint256 nullifierHash;
         uint256[8] calldata proof;
         assembly {
-            message := calldataload(add(4, 32))
-            merkleTreeRoot := calldataload(add(4, 36))
-            nullifierHash := calldataload(add(4, 68))
-            proof := calldataload(add(4, 100))
+            message := mload(add(data, 32))
+            merkleTreeRoot := mload(add(data, 64))
+            nullifierHash := mload(add(data, 96))
+            proof := mload(add(data, 128))
         }
         ISemaphore(_semaphore).verifyProof(
             _groupId,

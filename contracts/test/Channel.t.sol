@@ -17,7 +17,7 @@ contract ChannelTest is Test {
         alice = vm.addr(1);
         bob = vm.addr(2);
 
-        channel = address(new BasicChannel("test", "test"));
+        channel = address(new BasicChannel("test", 0x01));
     }
 
     function testSendMessage() public {
