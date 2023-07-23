@@ -5,28 +5,28 @@ import "../interfaces/IChannel.sol";
 
 contract BasicChannel is IChannel {
     bytes32 public immutable _name;
-    bytes32 public immutable _joiningRules;
+    bytes1 public immutable _type;
 
-    constructor(bytes32 name_, bytes32 joiningRules_) {
+    constructor(bytes32 name_, bytes1 type_) {
         _name = name_;
-        _joiningRules = joiningRules_;
+        _type = type_;
     }
 
     function name() public view override returns (bytes32) {
         return _name;
     }
 
-    function getJoiningRules() external view override returns (bytes32) {
-        return _joiningRules;
-    }
-
-    function getType() external pure override returns (bytes1) {
+    function getType() external view override returns (bytes1) {
         // type : 0x1 | 0x0 << 1 | 0x0 << 2
-        return bytes1(0x01);
+        return _type;
     }
 
-    function join(bytes calldata) external override {
-        revert("You don't need to join this channel to send a message.");
+    function join(string memory pubkey, bytes memory) external {
+        emit MemberJoined(msg.sender, pubkey);
+    }
+
+    function postCreds(address member, string memory cipherkey) external {
+        emit MemeberCredentials(member, cipherkey);
     }
 
     function sendMessage(bytes memory data) external override {
@@ -36,5 +36,4 @@ contract BasicChannel is IChannel {
         }
         emit MessageSent(0, res);
     }
-
 }
