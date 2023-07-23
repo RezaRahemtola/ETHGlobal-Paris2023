@@ -1,6 +1,6 @@
 export enum GroupAccess {
 	PRIVATE,
-	JOINABLE,
+	PUBLIC,
 }
 
 export interface Group {
