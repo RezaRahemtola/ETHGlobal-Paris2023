@@ -11,6 +11,7 @@ import { Contract, ethers } from "ethers";
 import channel_abi from "@/app/channel_abi.json";
 import { CONTRACT_ADDRESS } from "@/config/environment";
 import abi from "@/app/abi.json";
+import Link from "next/link";
 
 type GroupData =
 	| {
@@ -111,7 +112,7 @@ const MessageApp = () => {
 			<section className="relative z-10 overflow-hidden pt-32 pb-16 md:pb-20 lg:pb-28">
 				<div className="container mx-auto w-[50rem]">
 					<div className="mx-auto mb-5">
-						<a href="/list" className="flex flex-row align-middle cursor-pointer">
+						<Link href="/rooms" className="flex flex-row align-middle cursor-pointer">
 							<svg className="w-5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
 								<path
 									fillRule="evenodd"
@@ -120,7 +121,7 @@ const MessageApp = () => {
 								></path>
 							</svg>
 							<p className="ml-2">Previous</p>
-						</a>
+						</Link>
 					</div>
 					<div className="mx-auto h-[50rem] overflow-y-auto bg-interface-message rounded-lg">
 						{messages.map((messageData) => (
