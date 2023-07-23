@@ -1,7 +1,7 @@
 import axios from "axios";
 import { PINATA_API_KEY, PINATA_API_SECRET } from "@/config/environment";
 
-const pinFileToIPFS = async (e, fileImg) => {
+export const pinFileToIPFS = async (e, fileImg) => {
 	if (fileImg) {
 		try {
 			const formData = new FormData();
@@ -20,9 +20,31 @@ const pinFileToIPFS = async (e, fileImg) => {
 
 			return res.data.IpfsHash as string;
 		} catch (error) {
-			console.error(`Error sending File to IPFS: ${error}`);
+			console.error(`Error sending file to IPFS: ${error}`);
 		}
 	}
 };
 
-export default pinFileToIPFS;
+export const pinJSONToIPFS = async (e, text) => {
+	if (text) {
+		try {
+			const formData = new FormData();
+			formData.append("text", text);
+
+			const res = await axios({
+				method: "post",
+				url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+				data: formData,
+				headers: {
+					pinata_api_key: PINATA_API_KEY,
+					pinata_secret_api_key: PINATA_API_SECRET,
+					"Content-Type": "application/json",
+				},
+			});
+
+			return res.data.IpfsHash as string;
+		} catch (error) {
+			console.error(`Error sending text to IPFS: ${error}`);
+		}
+	}
+};

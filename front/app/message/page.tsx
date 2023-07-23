@@ -5,15 +5,29 @@ import MessageInput from "@/components/Messaging/MessageInput";
 import { Group, GroupAccess } from "@/types/group";
 import { MessageType } from "@/types/message";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useGroupsContext } from "@/utils/useGroupsContext";
+import { Contract, ethers } from "ethers";
+import channel_abi from "@/app/channel_abi.json";
+import { CONTRACT_ADDRESS } from "@/config/environment";
+import abi from "@/app/abi.json";
+
+type GroupData =
+	| {
+			semaphore: false;
+	  }
+	| {
+			semaphore: true;
+			groupId: string;
+	  };
+
+const semaphoreGroupType = "0x02";
 
 const MessageApp = () => {
-	const group: Group = {
-		id: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
-		title: "My joinable super semaphore group",
-		access: GroupAccess.JOINABLE,
-		semaphore: false,
-	};
+	const router = useRouter();
+	const searchParams = useSearchParams();
+	const groupsCtx = useGroupsContext();
+
 	const [messages, setMessages] = useState([
 		{
 			type: MessageType.TEXT,
@@ -22,25 +36,70 @@ const MessageApp = () => {
 			address: "0xcE8c5efB26AaeFBE79Eb03D2698A654b0835eB2a",
 		},
 	]);
-	const searchParams = useSearchParams();
-	const router = useRouter();
+
+	useEffect(() => {
+		(async () => {
+			const ethereum = window.ethereum;
+			const accounts = await ethereum.request({
+				method: "eth_requestAccounts",
+			});
+
+			const provider = new ethers.BrowserProvider(ethereum);
+			const registry = new Contract(CONTRACT_ADDRESS, abi.abi, await provider.getSigner(accounts[0]));
+			const rawRes = await registry.getChannels();
+			const res = [];
+			rawRes.map((group) => {
+				res.push({
+					id: group[0],
+					title: ethers.decodeBytes32String(group[1]),
+					access: group[2] >> 3 == 1 ? GroupAccess.JOINABLE : GroupAccess.PRIVATE,
+					semaphore: group[2] >> 2 == 1,
+				});
+			});
+			groupsCtx.setGroups(res);
+		})();
+	}, []);
 
 	const id = searchParams.get("id");
+	const group = useMemo<Group | null>(() => groupsCtx.groups.find((group) => group.id === id), [id, groupsCtx.groups]);
 
 	if (!id) {
 		router.push("/");
 		return <></>;
 	}
 
-	const sendMessage = (data) => {
-		setMessages([
-			...messages,
-			{
-				...data,
-				owned: true,
-			},
-		]);
+	useEffect(() => {
+		(async () => {
+			const ethereum = window.ethereum;
+			const accounts = await ethereum.request({
+				method: "eth_requestAccounts",
+			});
+
+			const provider = new ethers.BrowserProvider(ethereum);
+			const registry = new Contract(group.id, channel_abi.abi, await provider.getSigner(accounts[0]));
+			const type = await registry.getType();
+
+			if (type !== semaphoreGroupType) {
+				return {
+					semaphore: false,
+				};
+			}
+
+			const groupId = await registry._groupId();
+			return {
+				semaphore: true,
+				groupId,
+			};
+		})();
+	}, [group]);
+
+	const sendMessage = (data: string) => {
+		console.log("sending ", data);
 	};
+
+	if (!group) {
+		return <>Loading...</>;
+	}
 
 	return (
 		<>
@@ -68,7 +127,7 @@ const MessageApp = () => {
 							></MessageCard>
 						))}
 					</div>
-					<MessageInput sendMessage={(data) => sendMessage(data)} />
+					<MessageInput sendMessage={(data) => sendMessage(data.value)} />
 				</div>
 				<div className="absolute top-0 left-0 z-[-1]">
 					<svg width="1440" height="969" viewBox="0 0 1440 969" fill="none" xmlns="http://www.w3.org/2000/svg">
