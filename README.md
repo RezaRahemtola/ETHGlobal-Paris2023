@@ -1,8 +1,10 @@
 # ETHGlobal Paris 2023 - Signary ☁️
 
-![Logo](.github/assets/logo.png)
+[![Logo](.github/assets/logo.png)](https://ethglobal.com/showcase/signary-nu61c)
 
-Signary is a project realized for the [ETHGlobal Paris 2023](https://www.pyratzlabs.com/hack-in-tez) hackathon.
+[Signary](https://ethglobal.com/showcase/signary-nu61c) is a project realized for the [ETHGlobal Paris 2023](https://ethglobal.com/events/paris2023) hackathon that aims to be a hub of discussion channels where you can bring your favorite protocol to add privacy, reliability or membership verification features.
+
+It was awarded 2 prizes, one from the [Ethereum Foundation](https://github.com/ethereum) for being one of the best project using Zero-Knowledge, and the other from [Dfns](https://www.dfns.co/) as the 2nd best project built with their wallet. 
 
 ## Authors
 
